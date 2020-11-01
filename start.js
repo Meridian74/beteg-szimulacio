@@ -1,7 +1,7 @@
 // PARAMÉTEREK:
 const SCREEN_W = 1120;
 const SCREEN_H = 630;
-const CHANCE_OF_SICK = 10.00; // kezdeti beteg egyedek %-os aránya az össz populációban
+const CHANCE_OF_SICK = 3.00; // kezdeti beteg egyedek %-os aránya az össz populációban
 const NUM_OF_POP = 500;       // populáció létszáma
 
 const X_AXIS = 1000;
@@ -17,9 +17,9 @@ var avSens = 0;
 var recovereds = new Array(); // "R" státusz
 var avRecos = 0;
 
-var beta = 35.00;             // fertőződési esély % (0-99.99)
-var gamma = 10.00;            // gyógyulási esély % (0-99.99)
-var delta = 10.00;            // érzékennyé válási esély % (0-99.99)
+var beta = 10.00;             // fertőződési esély % (0-99.99)
+var gamma = 3.00;            // gyógyulási esély % (0-99.99)
+var delta = 3.00;            // érzékennyé válási esély % (0-99.99)
 var population = new Array();
 
 // --- egyszer fut le ---
@@ -133,6 +133,9 @@ function drawAxes() {
    rect(600,12,20,20);
    fill(255,0,0);
    rect(905,12,20,20);
+   
+   fill(100, 180, 200);
+   text('POPULÁCIÓ: ' + NUM_OF_POP + ' - induláskor beteg: ' + CHANCE_OF_SICK + '%', 320, 60);
 
    fill(200, 0, 200)
    text('beta: ' + beta + '%', 100, 610);
