@@ -1,14 +1,14 @@
 // PARAMÉTEREK:
 const SCREEN_W = 1120;
 const SCREEN_H = 630;
-const CHANCE_OF_SICK = 15.00; // kezdeti beteg egyedek %-os aránya az össz populációban
+const CHANCE_OF_SICK = 10.00; // kezdeti beteg egyedek %-os aránya az össz populációban
 const NUM_OF_POP = 500;       // populáció létszáma
 
 const X_AXIS = 1000;
 const Y_AXIS = 500;
 const MAX_STEP = 1000;        // összes vizsgálat száma
 
-var mStep = 200;             // M lépés szám
+var mStep = 1000;             // M lépés szám
 var step = 0;                 // az éppen futó kalkuláció sorszáma
 var sicks = new Array();      // "I" státusz
 var avSicks = 0;
@@ -17,21 +17,17 @@ var avSens = 0;
 var recovereds = new Array(); // "R" státusz
 var avRecos = 0;
 
-var beta = 10.00;             // fertőződési esély % (0-99.99)
+var beta = 35.00;             // fertőződési esély % (0-99.99)
 var gamma = 10.00;            // gyógyulási esély % (0-99.99)
 var delta = 10.00;            // érzékennyé válási esély % (0-99.99)
 var population = new Array();
 
-// --- INICIALIZÁLÁS ---
+// --- egyszer fut le ---
 function setup() {
-   frameRate(1);
+   frameRate(60);
    createCanvas(SCREEN_W, SCREEN_H);
    background(10);
-}
 
-// --- FŐPROGRAM ---
-function draw() {
-   
    drawAxes();
    populationInit();
 
@@ -44,20 +40,24 @@ function draw() {
       // eredmény megjelenítése a grafikonon
       let x = X_AXIS / MAX_STEP;
       let y = Y_AXIS / (avSicks + avSens + avRecos);
-      strokeWeight(2);
+      strokeWeight(1);
       stroke(0, 255, 0);
-      line(x * step + 62, 568, x * step + 62, 568 - y * (avSicks + avSens + avRecos));
+      line(x * step + 62, 568, x * step + 62, 569 - y * (avSicks + avSens + avRecos));
       stroke(0, 0, 255);
-      line(x * step + 62, 568, x * step + 62, 568 - y * (avSicks + avSens));
+      line(x * step + 62, 568, x * step + 62, 569 - y * (avSicks + avSens));
       stroke(255, 0, 0);
-      line(x * step + 62, 568, x * step + 62, 568 - y * (avSicks));
+      line(x * step + 62, 568, x * step + 62, 569 - y * (avSicks));
 
-      console.log(avSicks + avSens + avRecos);
       step++;
    }
    for (i = 0; i < 10000000; i++) {
       ;
    }
+
+}
+
+// --- FPS mértékében fut le ---
+function draw() {
 
 }
 
@@ -69,7 +69,6 @@ function populationInit() {
       else
          population[i] = 0;
    }
-   console.log("populáció: " + population.length);
 }
 
 function calculation() {
@@ -119,6 +118,33 @@ function drawAxes() {
    line(40, 570, 1060, 570);
    line(1060, 570, 1060, 580);
    line(560, 570, 560, 580);
+   
+   fill(255, 234, 0);
+   noStroke();
+   textSize(24);
+   textFont('Helvetica');
+   text('%', 15, 80);
+   text('idő: ' + MAX_STEP, 980, 610);
+
+   fill(245);
+   text('Recovered', 140, 30);
+   text('Sensitive', 480, 30);
+   text('Sick', 840, 30);
+   fill(0,255,0);
+   rect(280,12,20,20);
+   fill(0,0,255);
+   rect(600,12,20,20);
+   fill(255,0,0);
+   rect(905,12,20,20);
+
+   fill(200, 0, 200)
+   text('beta: ' + beta + '%', 100, 610);
+   text('gamma: '+ gamma + '%', 230, 610);
+   text('delta: '+ delta + '%', 390, 610);
+   
+   fill(100, 100, 250)
+   text('M: '+ mStep, 570, 610);
+   
 }
 
 function averageCalc() {
@@ -135,9 +161,5 @@ function averageCalc() {
    avSicks = avSicks / (step + 1);
    avSens = avSens / (step + 1);
    avRecos = avRecos / (step + 1);
-
-   console.log("AV-RE: " + avRecos);
-   console.log("AV-SE: " + avSens);
-   console.log("AV_SI: " + avSicks);
 
 }
